@@ -1,0 +1,684 @@
+<html>
+<title>Video Frame Selector</title>
+<style type="text/css">
+    body { background-color: #EEE; }
+    tr: nth-child(odd) { background-color:#CDD; }
+    tr: nth-child(even) { background-color:#DEE; }
+    td { vertical-align: top; padding: 3px 5px; }
+    p {color:green; font-size: 14px}
+    h1 {color:green;}
+    h2 {color:green;}
+    canvas {border: 1px dotted grey}
+    .leftStack {float: left}
+    .centered {text-align: center}
+    .padded {padding: 5px 5px;}
+    .pointer {cursor: pointer}
+    .invisible {display: none}
+    .box {border: 1px dotted green}
+    .inlineItem {display: inline}
+    .greycover 
+    {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 100%; width: 100% ;
+    opacity: 0.3; 
+    background-color: #000;
+    z-index: 1;
+    display: none;
+    }
+
+    span {font-size: 15px}
+    div.chopButtonBox
+    {
+        position: absolute;
+        left: 40%;
+        top: 40%;
+        text-align: center;
+        background-color:#ffffff;
+        border:1px solid black;
+        opacity:0.6;
+    }
+
+    .chopButton
+    {
+        font-size: 30px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 150px;
+    }
+
+    .doneButton
+    {
+        font-size: 15px;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 30px;
+    }
+
+    .cent
+    {
+     margin-left: auto;
+     margin-right: auto;
+     margin-top: auto;
+    }
+
+    #bigscreen
+    {
+      position: absolute;
+      top: 20px; left: 0px; 
+      z-index: 1; 
+      background-color: grey ;
+      opacity: 0.6
+    }
+
+    #introText
+    {
+      position: absolute;
+      width: 100%;
+      top: 100px;
+      text-align: center;
+      z-index: 2;
+
+    }
+
+
+</style>
+<script type = "text/javascript" src="./js/jquery-1.9.1.js"></script>
+<script type = "text/javascript" src="./js/jquery-ui.js"></script>
+<script type = "text/javascript" src = "./js/jquery.maskedinput.js"></script>
+<link type="text/css" rel="stylesheet" href="./css/jquery-ui.css">
+<script>
+var bigscreen = null;
+var video = null;
+var chop_time = 0;
+var findex = 0;
+var capture = null;
+var duration = 0;
+var index = new Array();
+var canindex = new Array();
+var start_time = 0;
+var end_time = 0;
+var m = null;
+var i = 0;
+var frt = 24;
+var count = 0;
+var play = 1;
+var name = null;
+var pt = null;
+var v;
+var frames = new Array();
+var index = new Array();
+var canindex = new Array();
+var capturefrm = null;
+var capctx = null;
+var captureIdle = true;
+var tagged = 0;
+var tempctx = null;
+var first = true;
+var temp = null;
+var capture = null;
+var vw = null;
+var vh = null;
+var _ids = [];
+var ENDED = 0;
+var STARTED = 0;
+var touchEnd = 0;
+var m = 0;
+var capturing = 0;
+var previewing = 0;
+var FIRST = 1;
+var obj = null;
+var videoStatus = 1;
+var captureTimers = [];
+var o = null;
+var s = null;
+var tp;
+var src=null;
+
+$(function()
+{
+    $( "#confirm-frame" ).dialog
+    ({
+        title: 'Confirm Segment Chop Point',
+        autoOpen: false,
+        height: 400,
+        width: 1000,
+        modal: true,
+        resizable: false,
+        buttons:
+        {
+          'Cancel': function(){
+            $(this).dialog('close');
+          }
+        }
+     
+    }); //confirm-frame dialog
+}
+
+)
+
+
+function backtoChopPoint()
+{
+   toggleVideoScreen(1);
+   $(this).dialog('close');
+}
+
+function captureOnGo()
+{
+    while (captureTimers.length)
+    {
+      clearInterval(captureTimers.shift());
+    }
+    index = [];
+    canindex = [];
+    temp = [];
+    i = 0;
+    console.log('start');
+    capture = setInterval(
+    function()
+    {
+        var condition = (index.length>15);
+        switch (condition)
+            {
+              case true:
+                index.shift();
+                i = canindex.shift();
+                canindex.push(i);
+                tempctx = $('#bufferCanvases canvas')[i].getContext('2d');
+                if (ENDED)
+                  {
+                   tempctx.fillStyle = 'black';
+                   tempctx.fillRect(0, 0, $('#bufferCanvases canvas')[i].width, $('#bufferCanvases canvas')[i].height);
+                  }
+                else
+                  {
+                    tempctx.drawImage(video[0], 0, 0, $('#bufferCanvases canvas')[i].width, $('#bufferCanvases canvas')[i].height);
+                    tempctx.fillStyle = 'yellow';
+                    tempctx.font = '20px arial';
+                  }
+                //var f = Math.round(video[0].currentTime*frt);
+                var f = video[0].currentTime;
+                //tempctx.fillText(f,0,30);
+                temp.push(f);
+                index.push(f);
+                break;
+
+              case false:
+                canindex.push(i);
+                tempctx = $('#bufferCanvases canvas')[i].getContext('2d');
+                if (ENDED)
+                {
+                   tempctx.fillStyle = 'black'; 
+                   tempctx.fillRect(0, 0, $('#bufferCanvases canvas')[i].width, $('#bufferCanvases canvas')[i].height);
+                }
+                else
+                {
+                  tempctx.drawImage(video[0], 0, 0, $('#bufferCanvases canvas')[i].width, $('#bufferCanvases canvas')[i].height);
+                  tempctx.fillStyle = 'yellow';
+                }
+                //var f = Math.round(video[0].currentTime*frt);
+                var f = video[0].currentTime;
+                //tempctx.fillText(f,0,30);
+                index.push(f);
+                temp.push(f);
+                i += 1;
+                break;
+            }
+
+              if (video[0].paused && !ENDED) 
+              {
+                console.log('stopped because paused');
+                clearInterval(capture);
+                captureTimers.shift();
+              }
+        } ,1000/frt);
+    captureTimers.push(capture);
+
+} //captureOnGo
+
+function greyoutButtons()
+{
+ $('.greycover').show();
+ var ifCapturing = setInterval(function(){
+  if (!capturing)
+  {
+    clearInterval(ifCapturing);
+    $('.greycover').hide();
+  }
+ },100);
+
+}
+
+function greyoutButtons1()
+{
+
+  var pointerArray = $('.pointer');
+  var onclickStack = [];
+  var pointerStack =[];
+  pointerArray.css('opacity', 0.3);
+  pointerArray.css('background-color', '#000');
+  for (var i=0; i<pointerArray.length; i++)
+  {
+    pointerStack.push(pointerArray.eq(i));
+    onclickStack.push(pointerArray.eq(i).attr('onClick'));
+    pointerArray.eq(i).removeAttr('onClick');
+  }
+  var current_element = null;
+  var current_onclick = null;
+  var ifCapturing = setInterval(function(){
+  if (!capturing)
+  {
+    clearInterval(ifCapturing);
+    for (var i=0; i<pointerArray.length; i++)
+    {
+      current_element = pointerStack.shift();
+      current_onclick = onclickStack.shift();
+      current_element.attr('onClick', current_onclick);  
+    }
+    pointerArray.css('opacity', '');
+    pointerArray.css('background-color', '');
+  }
+ },100);
+}
+
+
+function updateScreen(callback)
+{
+     var putFrames0 = function(callback1)
+
+      {
+          console.log('putting frames');
+          var j = 0;
+          var k = 0;
+          var tempq = [].concat(canindex);
+          for (j = 0; j<index.length; j++)
+          {
+            if (index[j] >= findex)
+            {
+                break;
+                //postition in index
+            }
+          }
+          for (k=0; k<j-3; k++)
+          //while (tempq[0] != j-3)
+          {
+            tempq.push(tempq.shift());
+            //pull the starting value of canindex to queue-head
+          }
+
+          for (k=0; k<9; k++)
+          //for (k = 0; k<9; k++)
+          {
+              //j: which position in sequence index is findex
+              //l: from canindex
+              var l = tempq.shift();
+              var pf = $('#preview-frames canvas')[k];
+              var pfctx = pf.getContext('2d');
+              var width = pf.width;
+              var height = pf.height;
+              pfctx.drawImage($('#bufferCanvases canvas')[l], 0, 0, width, height);
+              pf.value = index[k+j-3];
+          }
+            if (ENDED)
+            {
+              clearInterval(capture);
+              //ENDED = 0;
+              capturing = 0;
+            }
+            else
+            {
+            video[0].pause();
+            setTimeout(function(){
+              video[0].currentTime = chop_time;  
+            },100);
+            
+            capturing =0;
+            }
+            if (callback1)
+            {
+              callback1();
+            }
+
+      };//Function putFrames
+      checkTimeRange();
+      greyoutButtons1();
+      //findex = Math.round(chop_time*frt);
+      findex = chop_time;
+
+      end_time = chop_time;
+      $("#ctime").val(chop_time.toFixed(4));
+      $("#ctime_show").val(toFormat(chop_time.toFixed(4)));
+      $('#etime').val(end_time);
+
+
+      m =index.length;
+
+      if (ENDED && index[m-1]<=findex && index[m-1]>index[m-2])
+      {
+            capturing =1;
+            console.log('at end of buffer ended');
+            setTimeout(function(){
+            putFrames0(callback);
+                },8000/frt);
+            return;
+      }
+
+      else if (ENDED && index[3]<=findex && findex<=index[m-1]+4/frt )
+      {
+          capturing =1;
+          console.log('within range ended');
+          putFrames0(callback);
+          return;
+      }
+
+
+      if (capturing)
+      {
+        console.log('capturing:'+capturing);
+        return;
+      }
+
+      if ((index[m-1]<=findex && findex<=index[m-1]+1/frt && !video[0].paused))   //at the end of buffer
+        {
+          //video[0].play();
+            capturing =1;
+            console.log('at end of buffer');
+            setTimeout(function(){
+            putFrames0(callback);
+                },8000/frt);
+            return;          
+        }
+
+     if (index[2]<=findex && findex+5/frt<=index[m-1]) //within range
+       {
+        capturing =1;
+        console.log('within range');
+        putFrames0(callback);
+        return;
+       } 
+
+
+      else //if not capturing
+      {
+      
+            capturing =1;
+            ENDED = 0;
+            $("#demo")[0].currentTime=chop_time-8/frt;
+            console.log('out of buffer');
+            console.log(video[0].seeking);
+            var timer = setInterval(function(){
+              if (!video[0].seeking)
+              {
+                clearInterval(timer);
+                if (video[0].paused)
+                {
+                  video[0].play();  
+                }
+                else
+                {
+                  clearInterval(capture);
+                  captureOnGo();  
+                } 
+
+                setTimeout(function(){
+                  putFrames0(callback);
+                },17000/frt);
+              }
+            },100);
+            return;
+ 
+      } //if not capturing
+} //function updateScreen()
+
+function checkTimeRange()
+{
+  if (chop_time > duration)
+  {
+    chop_time = duration;
+  }
+  if (chop_time < duration - 5/frt)
+  {
+    ENDED = 0;
+  }
+}
+
+function toFormat(seconds)
+  {
+    var min = Math.floor(seconds/60);
+    min = '0'+String(min);
+    ml=min.length;
+    var sec = Math.round(seconds)%60;
+    sec = '0'+String(sec);
+    sl=sec.length;
+    var str = min.slice(ml-2,ml)+":"+sec.slice(sl-2,sl);
+    return str;
+  }
+
+var handler = function(){
+  if (video[0].currentTime>end_time)
+    {
+      video[0].pause();
+      video[0].currentTime=start_time;
+    }
+
+};
+
+function shiftdown(t)
+    {
+      ENDED = 0;
+      chop_time = parseFloat($("#ctime")[0].value);
+      //$("#demo")[0].currentTime = end_time - t;
+      chop_time = chop_time-t;
+      updateScreen();
+    }       
+
+
+  function shiftup(t)
+  {
+     chop_time = parseFloat($("#ctime")[0].value);
+      //$("#demo")[0].currentTime = end_time - (-t);
+      chop_time = chop_time - (-t);
+      updateScreen();  
+     } //click up   
+
+  function jumpto(t)
+  {
+      chop_time = parseFloat(t);
+      updateScreen();
+  }
+
+
+
+$(document).ready(function()
+{   
+  
+    video=$("#demo");
+    vw = parseFloat(video.attr('width'));
+    vh = parseFloat(video.attr('height'));
+
+    bigscreen = $("#bigscreen")[0].getContext('2d');
+    var cover = $('#video-cover')[0].getContext('2d');
+    cover.fillStyle = 'pink';
+    cover.fillRect(0, 0, 600, 340);
+
+
+      $("#demo").bind("play", function(){
+        ENDED = 0;
+        captureOnGo();
+        });
+
+
+    $('.ui-dialog-titlebar-close').remove();
+    //$('#my_form').append($('.ui-dialog'));
+
+    $("#chopButton").button();
+    $('#doneButton').button();
+    $('#setsrc').button();
+    $('#doneButton').button('disable');
+    $('#bigscreen').show();  
+
+
+    $('#product_name_ad_input').on('blur', function(){
+      if (tp)
+        {
+          tp = tp.toLowerCase();
+          if ( $('input[value="tp"]').length ) $('input[value="tp"]:radio').attr('checked',true);
+        }
+    });
+
+    $('#doneButton').click(function(){
+      if (FIRST)
+      {
+        if (!video[0].paused)
+          {
+            video[0].pause();
+          }
+        contentNeverChanged();
+      }
+      else
+      {
+        $('#done').dialog('open');
+      }
+    });
+
+ 
+    $("#chopButton").bind('click', function()
+    {
+        var chops_formatted = '00:00';
+        var newCanvas = $('<canvas width="95" height = "65"/>').attr('class', 'leftStack');
+        var newctx = newCanvas[0].getContext('2d');
+        if (!STARTED)
+        {
+          video[0].play();
+          $('#bigscreen').hide();
+          $('#chopButton span span').html('chop');
+          $('#doneButton').button('enable');
+          STARTED = 1;
+          $('#introText').hide();
+
+          newctx.drawImage(video[0], 0, 0, newCanvas[0].width, newCanvas[0].height);
+          newctx.font = '15px';
+          newctx.fillStyle = 'yellow';
+          newctx.fillText(chops_formatted,50,50);
+          return;
+        }
+        if (ENDED)
+        {
+          $('#confirm-frame').dialog('open');
+          return;
+        }
+        chop_time = video[0].currentTime-0.5;
+        $("#ctime").val(chop_time.toFixed(4));
+        $("#ctime_show").val(toFormat(chop_time.toFixed(4)));
+        //toggleVideoScreen(0);
+        var func = function()
+        {
+            $('#confirm-frame').dialog('open'); 
+        }
+        updateScreen(func);
+    }); //click chopButton
+
+    $("#ctime_show").mask("99:99");
+
+    video.bind("loadedmetadata", function(){
+      duration = video[0].duration;
+      var newCanvas = $('<canvas/>').width(85).height(55);
+      var newctx = newCanvas[0].getContext('2d');
+      newctx.drawImage(video[0], 0,0, newCanvas[0].width, newCanvas[0].height);
+
+    });
+
+    $("#setsrc").bind('click', function(){
+      src=$('#videosrc').val();
+      $("#demo source").attr("src", src);
+      video.load();
+    });
+
+}); //ready document
+
+
+$(document).keypress(
+    function(event){
+     if (event.which == '13') {
+        event.preventDefault();
+      }
+}); //prevent enter submit form   
+
+</script>
+
+<body>
+<input type = "hidden" id="ctime">
+<div id="video-container" class = 'box cent' style = "position:relative; width: 1000px; height: 600px;">
+  <canvas id='video-cover' style = 'height: 567px; width: 1000px; position: absolute; display: none'>
+  </canvas>
+  <video id = "demo" controls = "controls" height="567px" width="1000px" style = 'z-index: 0'> 
+    <source src ='' />
+  </video>
+  <div id="chopButton" class = 'chopButtonBox' style="height: 150px; width: 200px; z-index: 2">
+      <span class = 'chopButton'>Start</span>
+  </div>
+  <div id='introText'>
+    <p style = 'font-size: 24px; color: white'>Click button to select a frame in this video</p>
+  </div>
+</div><!-- video-container -->
+<div>
+  <input type='text' id='videosrc'/>
+  <div id="setsrc">
+    Set Video Source
+  </div>
+</div>
+
+
+<div id="confirm-frame" class = 'invisible' style = "border: 1px dotted green;">
+  <div style="height: 30px; padding-top: 30px">
+      <span class = "leftStack">Select the first frame of the new content to set the chop point</span>
+      <canvas id="bigscreen" class = 'invisible' width="1000px" height="567px"></canvas>
+      <span class = "leftStack" style = "padding-left: 40px">Chop Point Time</span>                
+        <input style = "height: 25px; float: left; padding-left: 10px" type="text" id="ctime_show">              
+      <div style = "position: relative; float: left; width: 15px; height: 100%">
+        <div id="up0" class="pointer" onclick = 'shiftup(1)' style = "margin-botton: 1px;font-size: 10px; border: 1px solid grey">up</div>
+        <div id="down0" class="pointer" onclick = 'shiftdown(1)' style = "margin-top: 1px; font-size: 10px; border: 1px solid grey">down</div>
+        <div class = 'greycover'>
+        </div>
+      </div>
+  </div>
+  <div name="block" style = "height: 50px; width: 100%">
+  </div>   
+  <div id="preview-frames" style = 'position: relative'>
+      <img class='pointer shiftbutton' style="border: 0px" width = "40px" height = "40px" id="end_shift_left" onclick='shiftdown(8/frt)' src="./css/images/shift_left.png">
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c1' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c2' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c3' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' id='c4' width = "85px" height = "55px"></canvas>
+      <img width = "24px" height = "60px" src = "./css/images/chop_point.png"></img>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c5' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c6' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c7' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c8' width = "85px" height = "55px"></canvas>
+      <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c9' width = "85px" height = "55px"></canvas>
+      <img class = 'pointer shiftbutton' style="border: 0px" width = "40px" height = "40px" id="end_shift_right" onclick='shiftup(8/frt)' src="./css/images/shift_right.png">
+  </div>
+</div><!-- video container -->
+
+  <div id="bufferCanvases" class = 'invisible' style = 'height: 75px; padding-top: 20px'>
+      <canvas id="b1" width = "170px" height = "110px"></canvas>
+      <canvas id="b2" width = "170px" height = "110px"></canvas>
+      <canvas id="b3" width = "170px" height = "110px"></canvas>
+      <canvas id="b4" width = "170px" height = "110px"></canvas>
+      <canvas id="b5" width = "170px" height = "110px"></canvas>
+      <canvas id="b6" width = "170px" height = "110px"></canvas>
+      <canvas id="b7" width = "170px" height = "110px"></canvas>
+      <canvas id="b8" width = "170px" height = "110px"></canvas>
+      <canvas id="b9" width = "170px" height = "110px"></canvas>
+      <canvas id="b10" width = "170px" height = "110px"></canvas>
+      <canvas id="b11" width = "170px" height = "110px"></canvas>
+      <canvas id="b12" width = "170px" height = "110px"></canvas>
+      <canvas id="b13" width = "170px" height = "110px"></canvas>
+      <canvas id="b14" width = "170px" height = "110px"></canvas>
+      <canvas id="b15" width = "170px" height = "110px"></canvas>
+      <canvas id="b16" width = "170px" height = "110px"></canvas>
+  </div><!-- bufferCanvases -->
+
+</body>
+</html>
