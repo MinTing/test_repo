@@ -25,6 +25,8 @@ var NewButtonView = Backbone.View.extend(
 				throw 'NoCollectionDefined';
 			}
 		},
+
+		lastAuthor: '',
 		
 		/**
 		 * Click event handler that first creates a new empty comment model, and assigns the model to a FormView instance.
@@ -32,13 +34,20 @@ var NewButtonView = Backbone.View.extend(
 		 * @returns {Boolean} Returns false to stop propagation
 		 */
 		createComment: function () {
+			console.log('lastAuthor ');
+			console.log(this.lastAuthor);
 			// create new comment model
 			var comment = new CommentModel({});
+			comment.set({author: this.lastAuthor});
+			console.log(comment.get('author'));
+
 			// render form view right after new button
 			var formview = new FormView({model: comment});
 			this.$el.after(formview.render().$el);
+
 			// add saved model to collection after form was submitted successfully
 			formview.on('success', this.handleFormSuccess, this);
+
 			// finally, return false to stop event propagation
 			return false;
 		},
@@ -49,6 +58,8 @@ var NewButtonView = Backbone.View.extend(
 		 */
 		handleFormSuccess: function (model) {
 			this.collection.add(model);
+			console.log('this is handleFormSuccess speaking');
+			this.lastAuthor=model.get('author');
 		}
 	
 	}

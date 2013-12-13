@@ -40,7 +40,8 @@ var CommentView = Backbone.View.extend(
 		 * View init method, subscribing to model events
 		 */
 		initialize: function () {
-			this.model.on('change', this.render, this);
+			console.log('this is commentview initialize speaking');
+			this.model.on('change: author, text', this.render, this);
 			this.model.on('destroy', this.remove, this);
 		},
 		
@@ -51,15 +52,29 @@ var CommentView = Backbone.View.extend(
 		render: function () {
 			// template is rendered in the main html, inside a <script /> tag with the specified id
 			var template = $('#comment-template').text();
-
+			console.log('this is commentview render speaking');
 			// variables passed to the template for rendering
 			var template_vars = {
 				author: this.model.get('author'),
-				text: this.model.get('text')
+				text: this.model.get('text'),
+				errormsg: this.model.get('errormsg')
 			};
-			
+			var msg = $('<div />')
+							.text('Error: some field left blank')
+							.addClass('notification');
 			// set the inner html of the container element to the Mustache rendered output
 			this.$el.html(Mustache.to_html(template, template_vars));
+			console.log(this.$el.html());
+			if (this.model.get('errormsg'))
+			{
+				this.$el.append(msg);
+				setTimeout(function () {
+					msg.remove();
+			}, 5000);
+
+			}
+
+			console.log(this.$el.html());
 			return this;
 		},
 		
@@ -109,19 +124,30 @@ var CommentView = Backbone.View.extend(
 		 */
 		handleEditSuccess: function (model) {
 			// create a new notification that is removed after 5 seconds
+			console.log('this is handleEditSuccess Speaking');
+			console.log(this.model.get('errormsg'));
 			var $notification = $('<div />')
 									.text('Comment by ' + model.get('author') + ' is saved.')
 									.addClass('notification');
-			
+			var msg = $('<div />')
+				.text('Error: some field left blank')
+				.addClass('notification');
+
 			// append notification to edited comments container element
+			//display error message if any field was left empty
+
 			this.$el.append($notification);
+			if (this.model.get('errormsg'))
+			{
+				this.$el.append(msg);
+			}
 			
-			// remove notification after 5 seconds
+			// // remove notification after 5 seconds
 			setTimeout(function () {
 				$notification.remove();
 			}, 5000);
 		},
-		
+	
 		/**
 		 * Override the default view remove method with custom actions
 		 */
