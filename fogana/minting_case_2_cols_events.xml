@@ -1,0 +1,108 @@
+<response>
+<cases count="1">
+<case ixBug="2" operations="edit,assign,resolve,email,remind">
+<events>
+<event ixBugEvent="3" ixBug="2">
+<ixBugEvent>3</ixBugEvent>
+<evt>1</evt>
+<sVerb>
+<![CDATA[ Opened ]]>
+</sVerb>
+<ixPerson>2</ixPerson>
+<ixPersonAssignedTo>0</ixPersonAssignedTo>
+<dt>2013-12-14T01:14:17Z</dt>
+<s>
+<![CDATA[
+Welcome to FogBugz!
+ 
+ This case has been created and assigned to you automatically to help introduce you to FogBugz. Cases can only be assigned to one person, and that person is responsible for the next action on the case.
+ 
+ Your next action is to read the rest of this text and then resolve and close this case.
+ 
+ When you resolve a case, it typically gets assigned back to the case creator for verification and testing. They will close the case if they're satisfied, or reactivate the case if there's more work to do.
+ 
+ Once the case is closed, it's no longer considered to be "assigned" to anyone. There's no next action on the case, so if you go to Filters > My Cases or search for assignedto:"me", you'll only see open cases.
+ 
+ FogBugz stores all of the history for all of its cases, so you can always go back and see the discussion. Closed cases remain searchable in the system, and nothing ever gets deleted (except for spam).
+]]>
+</s>
+<fEmail>false</fEmail>
+<fHTML>false</fHTML>
+<fExternal>false</fExternal>
+<sChanges/>
+<sFormat/>
+<rgAttachments/>
+<evtDescription>
+<![CDATA[ Opened by Minting Xiao ]]>
+</evtDescription>
+<bEmail>false</bEmail>
+<bExternal>false</bExternal>
+<sPerson>
+<![CDATA[ Minting Xiao ]]>
+</sPerson>
+<sHtml>
+<![CDATA[
+Welcome to FogBugz!<br /> <br /> This case has been created and assigned to you automatically to help introduce you to FogBugz. Cases can only be assigned to one person, and that person is responsible for the next action on the case.<br /> <br /> Your next action is to read the rest of this text and then resolve and close this case.<br /> <br /> When you resolve a case, it typically gets assigned back to the case creator for verification and testing.&nbsp; They will close the case if they're satisfied, or reactivate the case if there's more work to do.<br /> <br /> Once the case is closed, it's no longer considered to be &quot;assigned&quot; to anyone. There's no next action on the case, so if you go to Filters &gt; My Cases or search for assignedto:&quot;me&quot;, you'll only see open cases.<br /> <br /> FogBugz stores all of the history for all of its cases, so you can always go back and see the discussion. Closed cases remain searchable in the system, and nothing ever gets deleted (except for spam).
+]]>
+</sHtml>
+</event>
+<event ixBugEvent="4" ixBug="2">
+<ixBugEvent>4</ixBugEvent>
+<evt>3</evt>
+<sVerb>
+<![CDATA[ Assigned ]]>
+</sVerb>
+<ixPerson>2</ixPerson>
+<ixPersonAssignedTo>2</ixPersonAssignedTo>
+<dt>2013-12-14T01:14:18Z</dt>
+<s/>
+<fEmail>false</fEmail>
+<fHTML>false</fHTML>
+<fExternal>false</fExternal>
+<sChanges/>
+<sFormat/>
+<rgAttachments/>
+<evtDescription>
+<![CDATA[ Assigned to Minting Xiao by Minting Xiao ]]>
+</evtDescription>
+<bEmail>false</bEmail>
+<bExternal>false</bExternal>
+<sPerson>
+<![CDATA[ Minting Xiao ]]>
+</sPerson>
+<sHtml/>
+</event>
+<event ixBugEvent="16" ixBug="2">
+<ixBugEvent>16</ixBugEvent>
+<evt>2</evt>
+<sVerb>
+<![CDATA[ Edited ]]>
+</sVerb>
+<ixPerson>2</ixPerson>
+<ixPersonAssignedTo>0</ixPersonAssignedTo>
+<dt>2013-12-15T05:23:41Z</dt>
+<s>
+<![CDATA[ What is this ]]>
+</s>
+<fEmail>false</fEmail>
+<fHTML>false</fHTML>
+<fExternal>false</fExternal>
+<sChanges/>
+<sFormat/>
+<rgAttachments/>
+<evtDescription>
+<![CDATA[ Edited by Minting Xiao ]]>
+</evtDescription>
+<bEmail>false</bEmail>
+<bExternal>false</bExternal>
+<sPerson>
+<![CDATA[ Minting Xiao ]]>
+</sPerson>
+<sHtml>
+<![CDATA[ What is this ]]>
+</sHtml>
+</event>
+</events>
+</case>
+</cases>
+</response>

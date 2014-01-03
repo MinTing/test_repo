@@ -37,8 +37,6 @@ var FormView = Backbone.View.extend(
 		 * View init method, subscribing to model events
 		 */
 		initialize: function () {
-			console.log('this is formview initialize speaking');
-			console.log(this.model.get('author'));
 			this.model.on('change: author, text', this.updateFields, this);
 			this.model.on('destroy', this.remove, this);
 		},
@@ -58,8 +56,6 @@ var FormView = Backbone.View.extend(
 			{
 				this.$el.html(Mustache.to_html(template, template_vars));
 				this.$el.find('.author')[0].placeholder=this.model.get('author');
-				console.log(this.$el.find('.author')[0].placeholder);
-				console.log(this.model.get('author'));
 				this.$el.find('.author').bind('input', function(){
 							thismodel.model.set({changed: 1});
 				});
@@ -88,7 +84,7 @@ var FormView = Backbone.View.extend(
 			}
 			else
 			{
-				alert("only one comment form can be opened");
+				alert("Only one comment form can be opened");
 				return false;
 			}
 			return this;
@@ -155,7 +151,6 @@ var FormView = Backbone.View.extend(
 			// MinTing: modification for Question 1
 			// clean up form
 			var a=this.confirmation();
-			console.log(a);
 			if (a)
 			{
 				this.remove();

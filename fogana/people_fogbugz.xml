@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?><response><description><![CDATA[All open cases assigned to Minting Xiao]]></description><cases count="10"><case ixBug="216" operations="edit,assign,resolve,reply,forward,remind"><sTitle><![CDATA[Create fingerprint data set that realistically represents production.]]></sTitle><events><event ixBugEvent="1000" ixBug="216"><ixBugEvent>1000</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-11-20T00:56:24Z</dt><s><![CDATA[This is a blocker, since such a data set is necessary before any verification or tuning using a completely repeatable data set is possible.
+
+One possibility is to run a CIDClient on the Toshiba that dumps fingerprints to a file.  Run HDMI out of DirecTV or Dish into an HDMI splitter.  From the splitter, one cable goes to the decklink and the other to the Toshiba.  Flip through a number of HD channels capturing channel changes and commercials to a file while also generating fingerprints from the TV. 
+
+Take the fingerprints dumped from the CIDClient and use the production snapshotting tool to dump the subset of the fingerprint database relevant to the data set.
+
+Annotate the Decklink-captured video.  Presumably the annotations are output to a subtitle (.srt) file.  Annotations should include marking the beginning and ending of each commercial and providing some unique ID to each commercial.  The IDs only need to be unique within the scope of the tests and may serve to determine how quickly the algorithm handles transitions: show to commercial, commercial to commercial, and commercial to show.
+
+Try to synchronize the Decklink-captured video to the timestamps in the fingerprint stream from the TV. Once the appropriate offsets have been determined, annotate the fingerprint dump with the content IDs in the .srt annotation file.
+
+Maybe repeat the entire process to create a second data set using SD channels or a mix of HD and SD.
+
+
+]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Josh Smallman.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[This is a blocker, since such a data set is necessary before any verification or tuning using a completely repeatable data set is possible.<br />
+<br />
+One possibility is to run a CIDClient on the Toshiba that dumps fingerprints to a file.&nbsp; Run HDMI out of DirecTV or Dish into an HDMI splitter.&nbsp; From the splitter, one cable goes to the decklink and the other to the Toshiba.&nbsp; Flip through a number of HD channels capturing channel changes and commercials to a file while also generating fingerprints from the TV. <br />
+<br />
+Take the fingerprints dumped from the CIDClient and use the production snapshotting tool to dump the subset of the fingerprint database relevant to the data set.<br />
+<br />
+Annotate the Decklink-captured video.&nbsp; Presumably the annotations are output to a subtitle (.srt) file.&nbsp; Annotations should include marking the beginning and ending of each commercial and providing some unique ID to each commercial.&nbsp; The IDs only need to be unique within the scope of the tests and may serve to determine how quickly the algorithm handles transitions: show to commercial, commercial to commercial, and commercial to show.<br />
+<br />
+Try to synchronize the Decklink-captured video to the timestamps in the fingerprint stream from the TV. Once the appropriate offsets have been determined, annotate the fingerprint dump with the content IDs in the .srt annotation file.<br />
+<br />
+Maybe repeat the entire process to create a second data set using SD channels or a mix of HD and SD.<br />
+<br />
+<br />
+]]></sHtml></event><event ixBugEvent="1001" ixBug="216"><ixBugEvent>1001</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>9</ixPersonAssignedTo><dt>2013-11-20T00:56:25Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Dave Harrison by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1736" ixBug="216"><ixBugEvent>1736</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-14T02:11:48Z</dt><s><![CDATA[Please update point include the commit hash of your last commit on the work regarding creating this data set.  
+ 
+ Make sure it is integrated into mainline.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Priority changed from '2 – Major blocker' to '3 – Must fix'.
+Correspondent set to '"Dave Harrison" <dave@samba.tv>'.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[<p>
+	Please update point include the commit hash of your last commit on the work regarding creating this data set. &nbsp;</p>
+<p>
+	Make sure it is integrated into mainline.</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+]]></sHtml></event></events></case><case ixBug="321" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Create python script for synchronizing FogBugz and Asana]]></sTitle><events><event ixBugEvent="1571" ixBug="321"><ixBugEvent>1571</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:13:43Z</dt><s><![CDATA[This is a cron.d job that will run on an instance that periodically syncs Fogbugz and Asana.
+
+The high-level process works as follows:
+
+1. PM or an engineer creates a task in Asana.
+2. If the task is sufficiently specific to be actionable, the engineer or PM enters the magic phrase "create ticket" in the description or in a comment.
+3. A cron job scans Asana tasks for "create ticket" and when found bidirectionally links them.
+
+Similarly if a task is modified in fogbugz then its state should be loosely synchronized with asana.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[This is a cron.d job that will run on an instance that periodically syncs Fogbugz and Asana.<br />
+<br />
+The high-level process works as follows:<br />
+<br />
+1. PM or an engineer creates a task in Asana.<br />
+2. If the task is sufficiently specific to be actionable, the engineer or PM enters the magic phrase &quot;create ticket&quot; in the description or in a comment.<br />
+3. A cron job scans Asana tasks for &quot;create ticket&quot; and when found bidirectionally links them.<br />
+<br />
+Similarly if a task is modified in fogbugz then its state should be loosely synchronized with asana.]]></sHtml></event><event ixBugEvent="1572" ixBug="321"><ixBugEvent>1572</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-11T21:13:44Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1573" ixBug="321"><ixBugEvent>1573</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:15:35Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 322.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1578" ixBug="321"><ixBugEvent>1578</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:54:38Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 323.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1584" ixBug="321"><ixBugEvent>1584</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T22:33:41Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 324.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1586" ixBug="321"><ixBugEvent>1586</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T22:41:22Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 325.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1591" ixBug="321"><ixBugEvent>1591</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:30:20Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 326.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1594" ixBug="321"><ixBugEvent>1594</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:43:09Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 327.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1597" ixBug="321"><ixBugEvent>1597</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:43:51Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 328.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1601" ixBug="321"><ixBugEvent>1601</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:45:47Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Priority changed from '4 – Fix if time' to '3 – Must fix'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1602" ixBug="321"><ixBugEvent>1602</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:46:12Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'Create tool for synchronizing fogbugz and as an' to 'Create tool for synchronizing FogBugz and Asana'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1604" ixBug="321"><ixBugEvent>1604</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T02:06:23Z</dt><s><![CDATA[cron.d --> jenkins job.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[cron.d --&gt; jenkins job.]]></sHtml></event><event ixBugEvent="1605" ixBug="321"><ixBugEvent>1605</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T02:06:57Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'Create tool for synchronizing FogBugz and Asana' to 'Create python script for synchronizing FogBugz and Asana'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1664" ixBug="321"><ixBugEvent>1664</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:26:25Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1665" ixBug="321"><ixBugEvent>1665</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:29:49Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1666" ixBug="321"><ixBugEvent>1666</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:41:39Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1667" ixBug="321"><ixBugEvent>1667</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:41:45Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'Create python script for synchronizing FogBugz and Asana' to 'testtitle'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1668" ixBug="321"><ixBugEvent>1668</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:43:41Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'testtitle' to 'Create python script for synchronizing FogBugz and Asana'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1669" ixBug="321"><ixBugEvent>1669</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:46:11Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1678" ixBug="321"><ixBugEvent>1678</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-13T00:43:09Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Added subcase 340.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event></events></case><case ixBug="322" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Create python code for listing newly created or modified FogBugz tickets.]]></sTitle><events><event ixBugEvent="1574" ixBug="322"><ixBugEvent>1574</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:15:35Z</dt><s><![CDATA[This involves learning how to use the FogBugz XML APIs to logon to FogBugz, use the search cmd, and to parse XML responses.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[This involves learning how to use the FogBugz XML APIs to logon to FogBugz, use the search cmd, and to parse XML responses.]]></sHtml></event><event ixBugEvent="1575" ixBug="322"><ixBugEvent>1575</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-11T21:15:35Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1576" ixBug="322"><ixBugEvent>1576</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:18:55Z</dt><s><![CDATA[FogBugz XML v8 API
+
+http://help.fogcreek.com/8202/xml-api]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[FogBugz XML v8 API<br />
+<br />
+http://help.fogcreek.com/8202/xml-api]]></sHtml></event><event ixBugEvent="1786" ixBug="322"><ixBugEvent>1786</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-17T03:57:35Z</dt><s><![CDATA[[create ticket]]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml><![CDATA[[create ticket]]]></sHtml></event><event ixBugEvent="1787" ixBug="322"><ixBugEvent>1787</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-17T03:58:03Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Revised Minting Xiao's entry from 12/17/2013 at 3:57 AM UTC
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event></events></case><case ixBug="323" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Determine how to list new tasks with Asana]]></sTitle><events><event ixBugEvent="1579" ixBug="323"><ixBugEvent>1579</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T21:54:38Z</dt><s><![CDATA[See API docs at http://developer.asana.com/documentation/
+
+Use Asasa "user settings" / "apps" and click "API Key"
+
+The API Key is used as the User in http requests to the Asana API.
+
+A simple test (use your API key where I put Gbv…w):
+
+   curl "https://app.asana.com/api/1.0/users/me" --user "GbviC2l.B1bJuAvVS8ct7qQdb3uIsqUw:"
+
+Returns the JSON
+
+{"data":{"id":2396135081819,"name":"Dave Harrison","email":"dave@flingo.tv","photo":null,"workspaces":[{"id":938725484794,"name":"flingo.tv"},{"id":498346170860,"name":"Personal Projects"}]}}
+
+]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[See API docs at http://developer.asana.com/documentation/<br />
+<br />
+Use Asasa &quot;user settings&quot; / &quot;apps&quot; and click &quot;API Key&quot;<br />
+<br />
+The API Key is used as the User in http requests to the Asana API.<br />
+<br />
+A simple test (use your API key where I put Gbv…w):<br />
+<br />
+&nbsp;  curl &quot;https://app.asana.com/api/1.0/users/me&quot; --user &quot;GbviC2l.B1bJuAvVS8ct7qQdb3uIsqUw:&quot;<br />
+<br />
+Returns the JSON<br />
+<br />
+{&quot;data&quot;:{&quot;id&quot;:2396135081819,&quot;name&quot;:&quot;Dave Harrison&quot;,&quot;email&quot;:&quot;dave@flingo.tv&quot;,&quot;photo&quot;:null,&quot;workspaces&quot;:[{&quot;id&quot;:938725484794,&quot;name&quot;:&quot;flingo.tv&quot;},{&quot;id&quot;:498346170860,&quot;name&quot;:&quot;Personal Projects&quot;}]}}<br />
+<br />
+]]></sHtml></event><event ixBugEvent="1580" ixBug="323"><ixBugEvent>1580</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-11T21:54:38Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event></events></case><case ixBug="325" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Task created in Asana with "create ticket", create a FogBugz ticket with an "equivalency link"]]></sTitle><events><event ixBugEvent="1587" ixBug="325"><ixBugEvent>1587</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T22:41:22Z</dt><s><![CDATA[When a PM/developer puts "create ticket" anywhere in a task's "notes", create a FogBugz ticket with the same title and description.  If the task has been assigned in Asana then it should be assigned to the same user in FogBugz.  Also in the FogBugz ticket's description include a hyperlink back to the Asana task. 
+
+This should be integrated with case 324.
+
+After this has been done, the tasks should be bidirectionally linked.
+
+This process needs to be idempotent.  If it runs multiple times and is successful one or more times, the result should be the same.  Do not add multiple bidirectional links.  Always check if one already exists.  If an asana ticket is found with a hyperlink, make sure the FogBugz ticket has a reverse link, and vice versa for FogBugz.   It needs to "repair" itself if either the Asana or FogBugz update fails. ]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[When a PM/developer puts &quot;create ticket&quot; anywhere in a task's &quot;notes&quot;, create a FogBugz ticket with the same title and description.&nbsp; If the task has been assigned in Asana then it should be assigned to the same user in FogBugz.&nbsp; Also in the FogBugz ticket's description include a hyperlink back to the Asana task. <br />
+<br />
+This should be integrated with case 324.<br />
+<br />
+After this has been done, the tasks should be bidirectionally linked.<br />
+<br />
+This process needs to be idempotent.&nbsp; If it runs multiple times and is successful one or more times, the result should be the same.&nbsp; Do not add multiple bidirectional links.&nbsp; Always check if one already exists.&nbsp; If an asana ticket is found with a hyperlink, make sure the FogBugz ticket has a reverse link, and vice versa for FogBugz.&nbsp;  It needs to &quot;repair&quot; itself if either the Asana or FogBugz update fails. ]]></sHtml></event><event ixBugEvent="1588" ixBug="325"><ixBugEvent>1588</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-11T22:41:22Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1637" ixBug="325"><ixBugEvent>1637</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T20:34:07Z</dt><s><![CDATA[The creation of a FogBugz ticket with a link back to Asana should be an atomic step.  Hopefully FogBugz and Asana are not idiotic tools and thus a call to add a task is atomic.  Thus if a ticket or task fails to be added then it is never added part way (e.g., with the title but without the description). 
+ 
+ If "add ticket to FogBugz" is atomic then when we "add ticket to FogBugz" in response to a ticket added in Asana we can include the link back to Asana.  Adding to FogBugz might fail, but if it succeeds then the link back to Asana will exist.
+ 
+ If "add ticket to Fogbugz" is atomic then we can use the hyperlink as the identifying link that ties the FogBugz task to the Asana task.  If "add task to Asana" is similarly atomic, then when we create an Asana task in response to creation of a FogBugz ticket then link from Asana to FogBugz can analogously become the identifying link that ties the FogBugz ticket to the Asana task.
+ 
+ The first created link: the one from FogBugz to Asana or the one from Asana to FogBugz becomes the identifying link that ties two tasks together. As long as a link exists in one direction or the other, the two tasks are considered identical.
+ 
+ If every a ticket or task is found with a one-directional identifying link then an identifying link should be added in the reverse direction.
+ 
+ Once a ticket and a task are tied together, if either changes we can propagate the changes to the other. Title can change, description can change, etc.  Any field for which there exists an equivalent field in other tool can change and yet the task/ticket are considered the same and the changes are propagated so long as a link exists in one direction or other.
+ 
+ However, we don't need to worry about propagating all applicable changes until a later ticket (see case 328).]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'In response to Asana "create ticket", create a FogBugz ticket.' to 'Task created in Asana with "create ticket", create a FogBugz ticket.'.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[<p>
+	The creation of a FogBugz ticket with a link back to Asana should be an atomic step. &nbsp;Hopefully FogBugz and Asana are not idiotic tools and thus a call to add a task is atomic. &nbsp;Thus if a ticket or task fails to be added then it is never added part way (e.g., with the title but without the description).&nbsp;</p>
+<p>
+	If &quot;add ticket to FogBugz&quot; is atomic then when we &quot;add ticket to FogBugz&quot; in response to a ticket added in Asana we can include the link back to Asana. &nbsp;Adding to FogBugz might fail, but if it succeeds then the link back to Asana will exist.</p>
+<p>
+	If &quot;add ticket to Fogbugz&quot; is atomic then we can use the hyperlink as the identifying link that ties the FogBugz task to the Asana task. &nbsp;If &quot;add task to Asana&quot; is similarly atomic, then when we create an Asana task in response to creation of a FogBugz ticket then link from Asana to FogBugz can analogously become the identifying link that ties the FogBugz ticket to the Asana task.</p>
+<p>
+	The first created link: the one from FogBugz to Asana or the one from Asana to FogBugz becomes the identifying link that ties two tasks together. <strong>As long as a link exists in one direction or the other, the two tasks are considered identical.</strong></p>
+<p>
+	If every a ticket or task is found with a one-directional identifying link then an identifying link should be added in the reverse direction.</p>
+<p>
+	Once a ticket and a task are tied together, if either changes we can propagate the changes to the other. Title can change, description can change, etc. &nbsp;Any field for which there exists an equivalent field in other tool can change and yet the task/ticket are considered the same and the changes are propagated so long as a link exists in one direction or other.</p>
+<p>
+	However, we don&#39;t need to worry about propagating all applicable changes until a later ticket (see case 328).</p>
+<p>
+	&nbsp;</p>
+<p>
+	&nbsp;</p>
+]]></sHtml></event><event ixBugEvent="1661" ixBug="325"><ixBugEvent>1661</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T22:15:45Z</dt><s><![CDATA[An "equivalency link" must be distinguishable from other types of links.  Just because a link exists between a task and a ticket does not mean they should be identified as a single equivalent ticket/task.
+ 
+ An Asana task is "equivalent" to a FogBugz ticket if they are linked by an "equivalency link."
+ 
+ Label equivalent links as such.  For example, in the description the equivalent link from FogBugz ticket should be "equivalent:
+ 
+     equivalent: https://app.asana.com/0/942469217074/7553090103848]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'Task created in Asana with "create ticket", create a FogBugz ticket.' to 'Task created in Asana with "create ticket", create a FogBugz ticket with an "equivalency link"'.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[<p>
+	An &quot;equivalency link&quot; must be distinguishable from other types of links. &nbsp;Just because a link exists between a task and a ticket does not mean they should be identified as a single equivalent ticket/task.</p>
+<p>
+	An Asana task is &quot;equivalent&quot; to a FogBugz ticket if they are linked by an &quot;equivalency link.&quot;</p>
+<p>
+	Label equivalent links as such. &nbsp;For example, in the description the equivalent link from FogBugz ticket should be &quot;equivalent:</p>
+<p>
+	&nbsp; &nbsp; equivalent: https://app.asana.com/0/942469217074/7553090103848</p>
+<p>
+	&nbsp;</p>
+]]></sHtml></event></events></case><case ixBug="326" operations="edit,assign,resolve,reply,forward,remind"><sTitle><![CDATA[Ticket created in FogBugz, create a task in Asana]]></sTitle><events><event ixBugEvent="1589" ixBug="326"><ixBugEvent>1589</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:29:46Z</dt><s><![CDATA[The script should download all recently added FogBugz tickets.  If no Asana task exists with an identical subject or with a link to the ticket in FogBugz then create a new Asana task.
+
+The process must be idempotent.  If it runs one or more times and succeeds at least once then the result should be the same.  Do not create multiple tasks in Asana.  If there is a link in recent tickets that is only one direction (e.g., Asana to Fogbugz) then create the link in the reverse direction (Fogbugz to Asana) as opposed to creating a new task in Asana.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[The script should download all recently added FogBugz tickets.&nbsp; If no Asana task exists with an identical subject or with a link to the ticket in FogBugz then create a new Asana task.<br />
+<br />
+The process must be idempotent.&nbsp; If it runs one or more times and succeeds at least once then the result should be the same.&nbsp; Do not create multiple tasks in Asana.&nbsp; If there is a link in recent tickets that is only one direction (e.g., Asana to Fogbugz) then create the link in the reverse direction (Fogbugz to Asana) as opposed to creating a new task in Asana.]]></sHtml></event><event ixBugEvent="1590" ixBug="326"><ixBugEvent>1590</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-12T00:29:46Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1592" ixBug="326"><ixBugEvent>1592</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:30:20Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Parent changed from (None) to Case 321.
+Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1680" ixBug="326"><ixBugEvent>1680</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-13T00:46:54Z</dt><s><![CDATA[After some discussion, I think for now we should only create equivalent Asana tasks if the magic phrase "create ticket" appears in the description or a comment of the FogBugz ticket.  Thus both Asana and FogBugz would require the "create ticket" magic phrase for Fogana to automatically create a bidirectionally equivalency hyperlinked ticket/task in the other.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Correspondent set to 'dave@samba.tv'.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[<p>
+	After some discussion, I think for now we should only create equivalent Asana tasks if the magic phrase &quot;create ticket&quot; appears in the description or a comment of the FogBugz ticket. &nbsp;Thus both Asana and FogBugz would require the &quot;create ticket&quot; magic phrase for Fogana to automatically create a bidirectionally equivalency hyperlinked ticket/task in the other.</p>
+]]></sHtml></event></events></case><case ixBug="327" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Run in Jenkins, output errors to console, on error exit with non-zero status.]]></sTitle><events><event ixBugEvent="1595" ixBug="327"><ixBugEvent>1595</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:43:09Z</dt><s><![CDATA[Log errors to a web server.  If an error occurs, log it.
+
+For example, if a connection is lost to Asana or Fogbugz then log it.
+
+Karthik, where should we log errors from an asana-fogbugz sync cron job?]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison, Karthik Kailash.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[Log errors to a web server.&nbsp; If an error occurs, log it.<br />
+<br />
+For example, if a connection is lost to Asana or Fogbugz then log it.<br />
+<br />
+Karthik, where should we log errors from an asana-fogbugz sync cron job?]]></sHtml></event><event ixBugEvent="1596" ixBug="327"><ixBugEvent>1596</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-12T00:43:10Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1603" ixBug="327"><ixBugEvent>1603</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T01:02:23Z</dt><s><![CDATA[By running from jenkins we will have a log of all executions available to the web so that if something happens we can go back and see what.]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Title changed from 'Log errors' to 'Run in Jenkins, output errors to console, on error exit with non-zero status.'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[By running from jenkins we will have a log of all executions available to the web so that if something happens we can go back and see what.]]></sHtml></event></events></case><case ixBug="328" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Loosely Synchronize state between Asana and FogBugz.]]></sTitle><events><event ixBugEvent="1598" ixBug="328"><ixBugEvent>1598</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:43:51Z</dt><s><![CDATA[I hope that there is a way to query Asana and FogBugz for recent changes (e.g., everything since the last several executions of the script).  If there is a difference between an Asana task and a FogBugz ticket for any field that can reasonably be mapped then the more recent change should be propagated to the other system.  Therefore, if I change something in Asana then within a few minutes the same change appears in FogBugz and vice versa.  If both Asana and FogBugz have been changed since the last execution of the script then the later one wins.
+
+Example: if I close a ticket in FogBugz then it should close in Asana.  If I reassign a ticket in FogBugz then the corresponding Asana task should be reassigned.
+
+The script must have a mapping between user IDs for FogBugz and Asana.  If no corresponding user is known between Asana and FogBugz then this should be logged (see case 327).]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[I hope that there is a way to query Asana and FogBugz for recent changes (e.g., everything since the last several executions of the script).&nbsp; If there is a difference between an Asana task and a FogBugz ticket for any field that can reasonably be mapped then the more recent change should be propagated to the other system.&nbsp; Therefore, if I change something in Asana then within a few minutes the same change appears in FogBugz and vice versa.&nbsp; If both Asana and FogBugz have been changed since the last execution of the script then the later one wins.<br />
+<br />
+Example: if I close a ticket in FogBugz then it should close in Asana.&nbsp; If I reassign a ticket in FogBugz then the corresponding Asana task should be reassigned.<br />
+<br />
+The script must have a mapping between user IDs for FogBugz and Asana.&nbsp; If no corresponding user is known between Asana and FogBugz then this should be logged (see case 327).]]></sHtml></event><event ixBugEvent="1599" ixBug="328"><ixBugEvent>1599</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-12T00:43:51Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1600" ixBug="328"><ixBugEvent>1600</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-12T00:44:02Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Category changed from 'Bug' to 'Feature'.
+Priority changed from '4 – Fix if time' to '3 – Must fix'.
+]]></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event></events></case><case ixBug="340" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[Create script to test idempotence, error correction, and eventual consistency]]></sTitle><events><event ixBugEvent="1676" ixBug="340"><ixBugEvent>1676</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-13T00:42:33Z</dt><s><![CDATA[We need a name for the script you are creating to sync FogBugz and Asana. For now I will call it "Fogana."
+ 
+ "Idempotence" means that if an operation is run multiple times and it succeeds at least once (i.e., twice, three times, etc.), the system ends up in the same state. http://en.wikipedia.org/wiki/Idempotent and search for "Computer science meaning".
+ 
+ "Error correction" refers to correcting errors that occur during transmission over a noisy channel (or performing operations on a system where partial failure may occur). http://en.wikipedia.org/wiki/Error_detection_and_correction
+ 
+ "Eventual consistency" means that if the same query is made to an item (e.g., either the Asana task and its equivalent FogBugz task) that they will eventually return the same value. See http://en.wikipedia.org/wiki/Eventual_consistency
+ 
+ "Atomicity" refers to a sequence of operations that either all occur or none do.   http://en.wikipedia.org/wiki/Atomicity_(database_systems)
+ Updating both FogBugz and Asana cannot achieve "atomicity".  They cannot be atomic because a user may update one manually without updating the other.  We want humans to update only one and Fogana will then propagate the changes.  Furthermore, when Fogana adds a ticket to Asana and FogBugz, creation of one task/ticket must complete in order to get a hyperlink to put in the other.  As a result Fogana cannot achieve atomic updates of FogBugz and Asana.  In the absence of atomicity we accept that only eventual consistency is possible.
+ 
+ Fogana should be idempotent, perform error correction, and achieve eventual consistency.
+ 
+ A good way to test idempotence is to create a test script that repeats operations:
+ 
+ 
+ Create ticket/task in Asana with the "create ticket" magic phrase.
+ 
+ Run the Fogana script.
+ 
+ Run the Fogana script again.
+ 
+ confirm that exactly one equivalent task is created in FogBugz and is linked to Asana.
+ 
+ 
+ Repeat the same thing for FogBugz to Asana.
+ 
+ To test error correction, the test script should do the following:
+ 
+ 
+ Creates ticket/task that is broken in some way.
+ 
+ Run the Fogana script.
+ 
+ Once the Fogana script completes, the test script confirms that the ticket/task has been repaired.
+ 
+ 
+ The test should at least test corrections to the following types of brokeness:
+ 
+ 
+ An Asana task is marked "create ticket," and a ticket exists within FogBugz with an equivalency link back to Asana, but the Asana task has no equivalency link to the FogBugz ticket.
+ 
+ A FogBugz ticket is marked with "create ticket," and an Asana task exists with an equivalency link to FogBugz, but FogBugz ticket has no equivalency link to the Asana task.
+ 
+ 
+ To test eventual consistency, the script should test the propagation of at least the following changes:
+ 
+ 
+ User adds "create ticket" to an Asana task.  After Fogana script runs, a ticket should exist in FogBugz with identical name and description and the Asana task and FogBugz ticket should bidirectionally linked with equivalency hyperlinks.
+ 
+ User adds "create ticket" to a FogButz ticket.  After Fogana script runs, a task should exist in Asana with identical name and description and the Asana task and FogBugz ticket should bidirectionally linked with equivalency hyperlnks.
+ 
+ User modifies description of the Asana task.  After Fogana script runs, the description change propagates to the equivalent FogBugz ticket.
+ 
+ User modifies description of the FogBugz ticket.  After Fogana script runs, the description change propagates to the equivalent Asana task.
+ 
+ User modifies title of the Asana task ...
+ 
+ User modifies title of the FogBugz ticket ...
+ 
+ User reassigns the Asana task ...
+ 
+ User reassigns the Fogbugz ticket ...]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Notified Dave Harrison.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml><![CDATA[<p>
+	We need a name for the script you are creating to sync FogBugz and Asana. For now I will call it &quot;Fogana.&quot;</p>
+<p>
+	&quot;Idempotence&quot; means that if an operation is run multiple times and it succeeds at least once (i.e., twice, three times, etc.), the system ends up in the same state. http://en.wikipedia.org/wiki/Idempotent and search for &quot;Computer science meaning&quot;.</p>
+<p>
+	&quot;Error correction&quot; refers to correcting errors that occur during transmission over a noisy channel (or performing operations on a system where partial failure may occur). http://en.wikipedia.org/wiki/Error_detection_and_correction</p>
+<p>
+	&quot;Eventual consistency&quot; means that if the same query is made to an item (e.g., either the Asana task and its equivalent FogBugz task) that they will eventually return the same value. See http://en.wikipedia.org/wiki/Eventual_consistency</p>
+<p>
+	&quot;Atomicity&quot; refers to a sequence of operations that either all occur or none do. &nbsp; http://en.wikipedia.org/wiki/Atomicity_(database_systems)<br />
+	Updating both FogBugz and Asana <strong>cannot achieve &quot;atomicity&quot;. &nbsp;</strong>They cannot be atomic because a user may update one manually without updating the other. &nbsp;We want humans to update only one and Fogana will then propagate the changes. &nbsp;Furthermore, when Fogana adds a ticket to Asana and FogBugz, creation of one task/ticket must complete in order to get a hyperlink to put in the other. &nbsp;As a result Fogana cannot achieve atomic updates of FogBugz and Asana. &nbsp;In the absence of atomicity we accept that <strong>only</strong> <strong>eventual consistency is possible</strong>.</p>
+<p>
+	Fogana should be <strong>idempotent</strong>, perform <strong>error correction</strong>, and achieve<strong> eventual consistency</strong>.</p>
+<p>
+	A good way to test idempotence is to create a test script that repeats operations:</p>
+<ol>
+	<li>
+		Create ticket/task in Asana with the &quot;create ticket&quot; magic phrase.</li>
+	<li>
+		Run the Fogana script.</li>
+	<li>
+		Run the Fogana script again.</li>
+	<li>
+		confirm that exactly one equivalent task is created in FogBugz and is linked to Asana.</li>
+</ol>
+<p>
+	Repeat the same thing for FogBugz to Asana.</p>
+<p>
+	To test error correction, the test script should do the following:</p>
+<ol>
+	<li>
+		Creates ticket/task that is broken in some way.</li>
+	<li>
+		Run the Fogana script.</li>
+	<li>
+		Once the Fogana script completes, the test script confirms that the ticket/task has been repaired.</li>
+</ol>
+<p>
+	The test should at least test corrections to the following types of brokeness:</p>
+<ol>
+	<li>
+		An Asana task is marked &quot;create ticket,&quot; and a ticket exists within FogBugz with an equivalency link back to Asana, but the Asana task has no equivalency link to the FogBugz ticket.</li>
+	<li>
+		A FogBugz ticket is marked with &quot;create ticket,&quot; and an Asana task exists with an equivalency link to FogBugz, but FogBugz ticket has no equivalency link to the Asana task.</li>
+</ol>
+<p>
+	To test eventual consistency, the script should test the propagation of at least the following changes:</p>
+<ol>
+	<li>
+		User adds &quot;create ticket&quot; to an Asana task. &nbsp;After Fogana script runs, a ticket should exist in FogBugz with identical name and description and the Asana task and FogBugz ticket should bidirectionally linked with equivalency hyperlinks.</li>
+	<li>
+		User adds &quot;create ticket&quot; to a FogButz ticket. &nbsp;After Fogana script runs, a task should exist in Asana with identical name and description and the Asana task and FogBugz ticket should bidirectionally linked with equivalency hyperlnks.</li>
+	<li>
+		User modifies description of the Asana task. &nbsp;After Fogana script runs, the description change propagates to the equivalent FogBugz ticket.</li>
+	<li>
+		User modifies description of the FogBugz ticket. &nbsp;After Fogana script runs, the description change propagates to the equivalent Asana task.</li>
+	<li>
+		User modifies title of the Asana task ...</li>
+	<li>
+		User modifies title of the FogBugz ticket ...</li>
+	<li>
+		User reassigns the Asana task ...</li>
+	<li>
+		User reassigns the Fogbugz ticket ...</li>
+</ol>
+<p>
+	&nbsp;</p>
+]]></sHtml></event><event ixBugEvent="1677" ixBug="340"><ixBugEvent>1677</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-13T00:42:33Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1679" ixBug="340"><ixBugEvent>1679</ixBugEvent><evt>2</evt><sVerb><![CDATA[Edited]]></sVerb><ixPerson>9</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-13T00:43:09Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges><![CDATA[Parent changed from (None) to Case 321.
+Notified Dave Harrison.
+]]></sChanges><sFormat><![CDATA[html]]></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Edited by Dave Harrison]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Dave Harrison]]></sPerson><sHtml></sHtml></event></events></case><case ixBug="320" operations="edit,assign,resolve,email,remind"><sTitle><![CDATA[first case]]></sTitle><events><event ixBugEvent="1568" ixBug="320"><ixBugEvent>1568</ixBugEvent><evt>1</evt><sVerb><![CDATA[Opened]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>0</ixPersonAssignedTo><dt>2013-12-11T20:21:02Z</dt><s><![CDATA[test test description]]></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Opened by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml><![CDATA[test test description]]></sHtml></event><event ixBugEvent="1569" ixBug="320"><ixBugEvent>1569</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>2</ixPersonAssignedTo><dt>2013-12-11T20:21:03Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Adam Gomaa by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event><event ixBugEvent="1570" ixBug="320"><ixBugEvent>1570</ixBugEvent><evt>3</evt><sVerb><![CDATA[Assigned]]></sVerb><ixPerson>21</ixPerson><ixPersonAssignedTo>21</ixPersonAssignedTo><dt>2013-12-11T20:22:45Z</dt><s></s><fEmail>false</fEmail><fHTML>false</fHTML><fExternal>false</fExternal><sChanges></sChanges><sFormat></sFormat><rgAttachments></rgAttachments><evtDescription><![CDATA[Assigned to Minting Xiao by Minting Xiao]]></evtDescription><bEmail>false</bEmail><bExternal>false</bExternal><sPerson><![CDATA[Minting Xiao]]></sPerson><sHtml></sHtml></event></events></case></cases></response>

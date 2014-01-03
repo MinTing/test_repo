@@ -34,12 +34,9 @@ var NewButtonView = Backbone.View.extend(
 		 * @returns {Boolean} Returns false to stop propagation
 		 */
 		createComment: function () {
-			console.log('lastAuthor ');
-			console.log(this.lastAuthor);
 			// create new comment model
 			var comment = new CommentModel({});
 			comment.set({author: this.lastAuthor});
-			console.log(comment.get('author'));
 
 			// render form view right after new button
 			var formview = new FormView({model: comment});
@@ -58,7 +55,6 @@ var NewButtonView = Backbone.View.extend(
 		 */
 		handleFormSuccess: function (model) {
 			this.collection.add(model);
-			console.log('this is handleFormSuccess speaking');
 			this.lastAuthor=model.get('author');
 		}
 	

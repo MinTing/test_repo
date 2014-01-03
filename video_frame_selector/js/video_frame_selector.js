@@ -8,7 +8,7 @@ var index = new Array();
 var canindex = new Array();
 var m = null;
 var i = 0;
-var frt = 24;
+var frt = 20;
 var count = 0;
 var play = 1;
 var name = null;
@@ -40,9 +40,30 @@ var o = null;
 var s = null;
 var tp;
 var src=null;
+var result=[];
 
 $(function()
 {
+    $( "#input-info" ).dialog
+    ({
+      title:'content of the last segment',
+      autoOpen: false,
+      height: 400,
+      width: 1000,
+      modal: true,
+      resizable: false,
+      buttons:
+      {
+        'Done': function(){
+          var content=$('#content')[0].value;
+          var timestamp=chop_time;
+          result.push({"content": content, "timestamp": timestamp});
+          $(this).dialog('close');
+        }
+      }
+
+    });
+
     $( "#confirm-frame" ).dialog
     ({
         title: 'Confirm Segment Chop Point',
@@ -55,10 +76,18 @@ $(function()
         {
           'Cancel': function(){
             $(this).dialog('close');
-          }
+          },
+          'Confirm': function(){
+            console.log(chop_time.toFixed(4));
+            $(this).dialog('close');
+            $('#input-info').dialog('open');
+
+          },
+
         }
      
     }); //confirm-frame dialog
+
 }
 
 )
@@ -80,7 +109,6 @@ function captureOnGo()
     canindex = [];
     temp = [];
     i = 0;
-    console.log('start');
     capture = setInterval(
     function()
     {
@@ -134,7 +162,6 @@ function captureOnGo()
 
               if (video[0].paused && !ENDED) 
               {
-                console.log('stopped because paused');
                 clearInterval(capture);
                 captureTimers.shift();
               }
@@ -194,7 +221,6 @@ function updateScreen(callback)
      var putFrames0 = function(callback1)
 
       {
-          console.log('putting frames');
           var j = 0;
           var k = 0;
           var l = 0;
@@ -264,7 +290,6 @@ function updateScreen(callback)
       if (ENDED && index[m-1]<=findex && index[m-1]>index[m-2])
       {
             capturing =1;
-            console.log('at end of buffer ended');
             setTimeout(function(){
             putFrames0(callback);
                 },8000/frt);
@@ -274,7 +299,6 @@ function updateScreen(callback)
       else if (ENDED && index[3]<=findex && findex<=index[m-1]+4/frt )
       {
           capturing =1;
-          console.log('within range ended');
           putFrames0(callback);
           return;
       }
@@ -282,7 +306,6 @@ function updateScreen(callback)
 
       if (capturing)
       {
-        console.log('capturing:'+capturing);
         return;
       }
 
@@ -290,7 +313,6 @@ function updateScreen(callback)
         {
           //video[0].play();
             capturing =1;
-            console.log('at end of buffer');
             setTimeout(function(){
             putFrames0(callback);
                 },8000/frt);
@@ -300,7 +322,6 @@ function updateScreen(callback)
      if (index[2]<=findex && findex+5/frt<=index[m-1]) //within range
        {
         capturing =1;
-        console.log('within range');
         putFrames0(callback);
         return;
        } 
@@ -312,8 +333,6 @@ function updateScreen(callback)
             capturing =1;
             ENDED = 0;
             $("#demo")[0].currentTime=chop_time-8/frt;
-            console.log('out of buffer');
-            console.log(video[0].seeking);
             var timer = setInterval(function(){
               if (!video[0].seeking)
               {
@@ -458,7 +477,7 @@ $(document).ready(function()
           newctx.font = '15px';
           newctx.fillStyle = 'yellow';
           newctx.fillText(chops_formatted,50,50);
-          return;
+          return false;
         }
         if (ENDED)
         {
@@ -468,6 +487,7 @@ $(document).ready(function()
         chop_time = video[0].currentTime-0.5;
         $("#ctime").val(chop_time.toFixed(4));
         $("#ctime_show").val(toFormat(chop_time.toFixed(4)));
+
         //toggleVideoScreen(0);
         var func = function()
         {

@@ -1,23 +1,19 @@
 
-<script type = "text/javascript" src="./js/jquery-1.9.1.js"></script>
-<script type = "text/javascript" src="./js/jquery.maskedinput.js"></script>
-<script type = "text/javascript" src="./js/jquery-ui.js"></script>
-<script type = "text/javascript" src="./js/video_frame_selector.js"></script>
-
 <link type="text/css" rel="stylesheet" href="./css/jquery-ui.css">
 <link type="text/css" rel="stylesheet" href="./css/video_frame_selector.css">
 
-<html>
 <title>Video Frame Selector</title>
-<script type = "text/javascript" src="./js/jquery-1.9.1.js"></script>
+<script type = "text/javascript" src="./js/jquery-2.0.3.min.js"></script>
 <script type = "text/javascript" src="./js/jquery-ui.js"></script>
 <script type = "text/javascript" src = "./js/jquery.maskedinput.js"></script>
 <script type = "text/javascript" src = "./js/video_frame_selector.js"></script>
 <link type="text/css" rel="stylesheet" href="./css/jquery-ui.css">
 <link type="text/css" rel="stylesheet" href="./css/video_frame_selector.css">
 
+<html>
+
 <body>
-    <input type = "hidden" id="ctime"/>
+    
     <div id="video-container" class = 'box cent' style = "position:relative; width: 1000px; height: 600px;">
       <canvas id='video-cover' style = 'height: 567px; width: 1000px; position: absolute; display: none'>
       </canvas>
@@ -31,11 +27,13 @@
         <p style = 'font-size: 24px; color: white'>Click button to select a frame in this video</p>
       </div>
     </div><!-- video-container -->
+
     <div>
-      <input type='text' id='videosrc'/>
+      <input type='text' id='videosrc' style="boarder: 1px green dotted"/>
       <div id="setsrc">
-        Set Video Source
+        Set Video Source.
       </div>
+      <input type="hidden" id="ctime"/>
     </div>
 
     <div id="confirm-frame" class = 'invisible' style = "border: 1px dotted green;">
@@ -67,6 +65,11 @@
           <canvas class = 'pointer' onclick = 'jumpto(this.value)' id='c9' width = "85px" height = "55px"></canvas>
           <img class = 'pointer shiftbutton' style="border: 0px" width = "40px" height = "40px" id="end_shift_right" onclick='shiftup(8/frt)' src="./css/images/shift_right.png">
       </div>
+
+      <div id="input-info" style='position: relative'>
+          Content<input type="text" id="content"/>
+      </div>
+
     </div><!-- video container -->
 
       <div id="bufferCanvases" class = 'invisible' style = 'height: 75px; padding-top: 20px'>
