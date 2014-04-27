@@ -7,8 +7,8 @@ import sys
 for line in sys.stdin:
     ip=line.split(' ')[0]
     req=line.split('\"')[1].split('\"')[0]
-    fi=req.split(' ')[1]
+    page=req.split(' ')[1]
     # print 'ip',ip
     # print 'req',req
     # print 'file', fi
-    print "{0}\t{1}".format(fi, 1)
+    print "{0}\t{1}".format(page, 1)
