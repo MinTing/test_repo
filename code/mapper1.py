@@ -6,7 +6,11 @@ import sys
 
 for line in sys.stdin:
     ip=line.split(' ')[0]
+    if len(line.split('\"'))!=3:
+        continue
     req=line.split('\"')[1].split('\"')[0]
+    if len(req.split(' '))!=3:
+        continue
     page=req.split(' ')[1]
     # print 'ip',ip
     # print 'req',req
