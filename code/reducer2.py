@@ -13,20 +13,22 @@ for line in sys.stdin:
         continue
     page=data[0]
     this=str(page)
+    # print 'this ', this, 'last ', last
     if not last==None:
         if not this in last and not last in this:
+            # print 'change'
             if hit>maxx:
                 maxx=hit
                 maxf=last
-                print "{0}\t{1}\t{2}".format(last, hit,'test')
-                hit=0
+            print "{0}\t{1}".format(last, hit)
+            hit=0
     hit+=1
     last=this
 # Complete reading lines
 if hit>maxx:
     maxx=hit
     maxf=last
-print "{0}\t{1}\t{2}".format(last, hit,'test')
+print "{0}\t{1}".format(last, hit)
 
 print "\n{0}\t{1}".format(maxf, maxx)
 
