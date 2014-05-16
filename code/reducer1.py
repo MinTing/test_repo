@@ -5,7 +5,7 @@ last=None
 hit=0
 
 for line in sys.stdin:
-    data=line.split('\t')
+    data=line.strip().split('\t')
     if len(data)!=2:
         continue
     page=data[0]
