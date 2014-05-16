@@ -9,7 +9,11 @@ for line in sys.stdin:
     if not len(data)==10:
         continue
     ip=line.split(' ')[0]
+    if len(line.split('\"'))!=3:
+        continue
     req=line.split('\"')[1].split('\"')[0]
+    if len(req.split(' '))!=3:
+        continue
     page=req.split(' ')[1]
     # print 'ip',ip
     # print 'req',req
